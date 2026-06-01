@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vura Launchpad — Launch the Next Big Token</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#f5c842;--gold-light:#ffe180;--gold-dark:#b8860b;
+  --green:#4ade80;--green-mid:#22c55e;--green-dark:#166534;--green-deep:#052e16;--green-light:#86efac;
+  --purple:#a855f7;--purple-dark:#7e22ce;--blue:#60a5fa;--red:#f87171;--orange:#fb923c;--teal:#2dd4bf;--pink:#f472b6;
+  --bg:#020702;--bg2:#040e04;--bg3:#071007;--bg4:#0a150a;
+  --surface:rgba(74,222,128,0.03);--surface2:rgba(74,222,128,0.07);
+  --border:rgba(74,222,128,0.12);--border2:rgba(74,222,128,0.22);
+  --text:#dcfce7;--text2:#86efac;--muted:#4a6b55;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;overflow-x:hidden;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-thumb{background:rgba(74,222,128,0.2);border-radius:3px;}
+
+/* BG */
+.site-bg{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(74,222,128,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(74,222,128,0.025) 1px,transparent 1px);background-size:55px 55px;}
+.bg-g1{position:absolute;top:-10%;left:-5%;width:55%;height:55%;background:radial-gradient(circle,rgba(245,200,66,0.06),transparent 65%);}
+.bg-g2{position:absolute;bottom:-10%;right:-5%;width:50%;height:50%;background:radial-gradient(circle,rgba(74,222,128,0.05),transparent 65%);}
+.bg-g3{position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);width:80%;height:70%;background:radial-gradient(ellipse,rgba(168,85,247,0.03),transparent 65%);}
+.bg-scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.015) 3px,rgba(0,0,0,0.015) 4px);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-left{opacity:0;transform:translateX(-28px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal-left.visible{opacity:1;transform:translateX(0);}
+.reveal-right{opacity:0;transform:translateX(28px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal-right.visible{opacity:1;transform:translateX(0);}
+
+/* SHARED */
+.max-w{max-width:1200px;margin:0 auto;padding:0 28px;}
+section{position:relative;z-index:1;padding:90px 0;}
+.section-tag{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:3px;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.section-tag::before{content:'//';color:var(--muted);}
+h2.section-title{font-family:'Orbitron',monospace;font-size:clamp(22px,3.2vw,42px);font-weight:900;line-height:1.1;margin-bottom:14px;background:linear-gradient(135deg,var(--text),var(--green-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.section-sub{font-size:15px;color:var(--text2);line-height:1.8;max-width:580px;}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.pill.green{background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.3);color:var(--green);}
+.pill.gold{background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.25);color:var(--gold);}
+.pill.purple{background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.3);color:var(--purple);}
+.pill.blue{background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.25);color:var(--blue);}
+.pill.red{background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.25);color:var(--red);}
+.pill.orange{background:rgba(251,146,60,0.1);border:1px solid rgba(251,146,60,0.25);color:var(--orange);}
+.pill.teal{background:rgba(45,212,191,0.1);border:1px solid rgba(45,212,191,0.25);color:var(--teal);}
+.divider{height:1px;background:var(--border);margin:20px 0;}
+
+/* BUTTONS */
+.btn-gold{padding:13px 28px;border-radius:50px;background:linear-gradient(135deg,#8b6914,#d4a017,#f5c842,#ffe180);color:#1a0a00;font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;border:none;cursor:pointer;box-shadow:0 4px 22px rgba(245,200,66,0.35);transition:all 0.25s;display:inline-flex;align-items:center;gap:6px;}
+.btn-gold:hover{box-shadow:0 6px 32px rgba(245,200,66,0.55);transform:translateY(-2px);}
+.btn-green{padding:13px 28px;border-radius:50px;background:linear-gradient(135deg,#052e16,#14532d,#166534,#22c55e);color:#f0fdf4;font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;border:none;cursor:pointer;box-shadow:0 4px 22px rgba(34,197,94,0.28);transition:all 0.25s;display:inline-flex;align-items:center;gap:6px;}
+.btn-green:hover{box-shadow:0 6px 32px rgba(34,197,94,0.45);transform:translateY(-2px);}
+.btn-purple{padding:13px 28px;border-radius:50px;background:linear-gradient(135deg,#4a1272,#7e22ce,#a855f7);color:#f5f3ff;font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;border:none;cursor:pointer;box-shadow:0 4px 22px rgba(168,85,247,0.28);transition:all 0.25s;display:inline-flex;align-items:center;gap:6px;}
+.btn-purple:hover{box-shadow:0 6px 32px rgba(168,85,247,0.45);transform:translateY(-2px);}
+.btn-outline{padding:13px 28px;border-radius:50px;background:transparent;border:1px solid rgba(74,222,128,0.35);color:var(--green);font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all 0.25s;display:inline-flex;align-items:center;gap:6px;}
+.btn-outline:hover{background:rgba(74,222,128,0.08);border-color:var(--green);transform:translateY(-2px);}
+
+/* TOAST */
+.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-10px);background:rgba(2,7,2,0.97);border:1px solid var(--green);border-radius:30px;padding:10px 24px;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;color:var(--green);opacity:0;transition:all 0.3s;pointer-events:none;z-index:9999;white-space:nowrap;box-shadow:0 0 22px rgba(74,222,128,0.25);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.gold{border-color:var(--gold);color:var(--gold);}
+.toast.purple{border-color:var(--purple);color:var(--purple);}
+.toast.red{border-color:var(--red);color:var(--red);}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.9);backdrop-filter:blur(14px);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.28s;}
+.overlay.open{opacity:1;pointer-events:all;}
+.modal{width:100%;max-width:580px;background:#071007;border:1px solid var(--border2);border-radius:20px;transform:scale(0.95);transition:transform 0.28s;max-height:92vh;overflow-y:auto;}
+.modal::-webkit-scrollbar{width:4px;}
+.modal::-webkit-scrollbar-thumb{background:var(--border2);}
+.overlay.open .modal{transform:scale(1);}
+.modal-hdr{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-family:'Orbitron',monospace;font-size:14px;font-weight:700;letter-spacing:2px;color:var(--green);}
+.modal-close{width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);transition:all 0.2s;}
+.modal-close:hover{border-color:var(--green);}
+.modal-body{padding:22px 24px 28px;}
+.mfield{margin-bottom:14px;}
+.mfield label{display:block;font-size:10px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;font-family:'JetBrains Mono',monospace;}
+.mfield input,.mfield select,.mfield textarea{width:100%;background:rgba(74,222,128,0.04);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-family:'Syne',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color 0.2s;}
+.mfield input:focus,.mfield select:focus,.mfield textarea:focus{border-color:var(--green);}
+.mfield input::placeholder,.mfield textarea::placeholder{color:var(--muted);}
+.mfield select option{background:#071007;}
+.mfield textarea{resize:none;min-height:80px;}
+.mbtn{width:100%;padding:14px;border:none;border-radius:12px;font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all 0.2s;margin-top:8px;}
+.mbtn-gold{background:linear-gradient(135deg,#8b6914,#d4a017,#f5c842);color:#1a0a00;box-shadow:0 4px 16px rgba(245,200,66,0.3);}
+.mbtn-gold:hover{box-shadow:0 6px 24px rgba(245,200,66,0.5);}
+.mbtn-green{background:linear-gradient(135deg,#052e16,#14532d,#22c55e);color:#f0fdf4;}
+.mbtn-outline{background:transparent;border:1px solid var(--border2);color:var(--green);}
+
+/* ══════════ NAVBAR ══════════ */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;background:rgba(2,7,2,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;gap:20px;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-coin{width:36px;height:36px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#fffbe0 0%,#f5c842 12%,#d4a017 28%,#8b6310 50%,#5c3f08 70%,#8b6310 85%,#f5c842 100%);box-shadow:0 0 0 1.5px #5c3f08,0 0 0 3px #f5c842,0 0 0 4.5px #8b6310,0 0 12px rgba(245,200,66,0.35);padding:3px;display:flex;align-items:center;justify-content:center;}
+.nav-coin-inner{width:100%;height:100%;border-radius:50%;background:#0a150a;overflow:hidden;}
+.nav-coin-inner img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.nav-logo-text{font-family:'Orbitron',monospace;font-size:15px;font-weight:900;letter-spacing:2px;background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-links{display:flex;align-items:center;gap:4px;flex:1;}
+.nav-link{padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.2s;}
+.nav-link:hover,.nav-link.active{color:var(--green);background:rgba(74,222,128,0.07);}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto;}
+.nav-vt{display:flex;align-items:center;gap:5px;background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.3);border-radius:20px;padding:5px 12px;font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:var(--gold);}
+.nvt-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:blink 1.8s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+/* ══════════ TICKER ══════════ */
+.ticker{margin-top:68px;background:rgba(5,46,22,0.35);border-bottom:1px solid rgba(74,222,128,0.1);padding:9px 0;overflow:hidden;position:relative;z-index:1;}
+.ticker-track{display:flex;gap:55px;white-space:nowrap;animation:ticker-scroll 30s linear infinite;}
+.ti{display:flex;align-items:center;gap:8px;flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:11px;}
+.ti-name{color:var(--muted);}
+.ti-val{color:var(--text);}
+.ti-up{color:var(--green);}
+.ti-dn{color:var(--red);}
+@keyframes ticker-scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ══════════ HERO ══════════ */
+#hero{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;padding:100px 28px 60px;overflow:hidden;}
+.hero-inner{max-width:1200px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.25);border-radius:30px;padding:6px 16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:18px;}
+.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:blink 2s ease-in-out infinite;}
+.hero-h1{font-family:'Orbitron',monospace;font-size:clamp(28px,4.5vw,56px);font-weight:900;line-height:1.05;letter-spacing:-1px;margin-bottom:10px;}
+.hero-h1 .g{background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;}
+.hero-h1 .gr{background:linear-gradient(135deg,var(--green-light),var(--green),var(--green-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;}
+.hero-sub{font-size:16px;color:var(--text2);line-height:1.78;margin:16px 0 28px;max-width:500px;}
+.hero-sub strong{color:var(--gold);}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px;}
+.hero-trust{display:flex;gap:16px;flex-wrap:wrap;}
+.ht-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);}
+.ht-item span{color:var(--green);}
+/* Hero right — featured IDO card */
+.hero-right{display:flex;flex-direction:column;gap:14px;}
+.featured-ido{background:linear-gradient(135deg,rgba(245,200,66,0.1),rgba(5,46,22,0.5),rgba(3,8,3,0.9));border:1px solid rgba(245,200,66,0.3);border-radius:22px;padding:22px;position:relative;overflow:hidden;}
+.fido-glow{position:absolute;top:-30%;right:-15%;width:250px;height:250px;background:radial-gradient(circle,rgba(245,200,66,0.1),transparent 65%);pointer-events:none;}
+.fido-live{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);margin-bottom:14px;}
+.fido-live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 1.5s ease-in-out infinite;box-shadow:0 0 6px rgba(74,222,128,0.5);}
+.fido-top{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+.fido-logo{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#052e16,#22c55e);display:flex;align-items:center;justify-content:center;font-size:24px;border:2px solid rgba(74,222,128,0.3);}
+.fido-name{font-family:'Orbitron',monospace;font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.fido-symbol{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);}
+.fido-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px;}
+/* Progress bar */
+.fido-progress-label{display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;}
+.fpl-raised{color:var(--gold);font-family:'Orbitron',monospace;font-weight:700;}
+.fpl-goal{color:var(--muted);}
+.fido-bar{height:10px;background:rgba(255,255,255,0.06);border-radius:5px;overflow:hidden;margin-bottom:10px;}
+.fido-bar-fill{height:100%;background:linear-gradient(90deg,var(--green-deep),var(--green-dark),var(--green),var(--gold));border-radius:5px;transition:width 1s ease;}
+.fido-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.fmeta-item{text-align:center;}
+.fmeta-val{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--text);display:block;margin-bottom:2px;}
+.fmeta-lbl{font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;}
+/* Countdown */
+.fido-countdown{display:flex;gap:8px;margin-bottom:14px;}
+.fc-box{flex:1;background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:10px;padding:8px;text-align:center;}
+.fc-val{font-family:'Orbitron',monospace;font-size:20px;font-weight:900;color:var(--gold);display:block;}
+.fc-lbl{font-size:8px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;}
+/* Mini IDO strip */
+.mini-ido-strip{display:flex;flex-direction:column;gap:8px;}
+.mini-ido{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.2s;}
+.mini-ido:hover{border-color:var(--border2);}
+.mi-logo{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.mi-info{flex:1;}
+.mi-name{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:var(--text);margin-bottom:2px;}
+.mi-type{font-size:10px;color:var(--muted);}
+.mi-right{text-align:right;}
+.mi-pct{font-family:'Orbitron',monospace;font-size:12px;font-weight:700;color:var(--gold);}
+.mi-bar{width:80px;height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;margin-top:3px;}
+.mi-bar-fill{height:100%;background:linear-gradient(90deg,var(--green-dark),var(--green));border-radius:2px;}
+
+/* STATS BAND */
+.stats-band{position:relative;z-index:1;display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--border);background:rgba(255,255,255,0.02);}
+.sb-item{padding:22px 16px;text-align:center;border-right:1px solid var(--border);}
+.sb-item:last-child{border-right:none;}
+.sb-val{font-family:'Orbitron',monospace;font-size:20px;font-weight:900;color:var(--green);display:block;margin-bottom:4px;}
+.sb-lbl{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+
+/* ══════════ LIVE IDO LIST ══════════ */
+#idos{background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 60%,var(--bg) 100%);}
+/* Filter tabs */
+.ido-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px;}
+.idf-btn{padding:9px 20px;border-radius:20px;border:1px solid var(--border);background:var(--surface);font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.2s;}
+.idf-btn:hover,.idf-btn.active{background:rgba(74,222,128,0.1);border-color:rgba(74,222,128,0.35);color:var(--green);}
+/* IDO Cards */
+.ido-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.ido-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;cursor:pointer;transition:all 0.3s;}
+.ido-card:hover{border-color:var(--border2);transform:translateY(-5px);box-shadow:0 20px 45px rgba(0,0,0,0.35);}
+.ic-banner{height:90px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.ic-banner-bg{position:absolute;inset:0;}
+.ic-banner-emoji{font-size:44px;position:relative;z-index:1;opacity:0.2;}
+.ic-logo{position:absolute;bottom:-18px;left:18px;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;border:3px solid var(--bg2);z-index:2;}
+.ic-status-badge{position:absolute;top:10px;right:10px;}
+.ic-body{padding:26px 18px 18px;}
+.ic-name{font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.ic-symbol{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:8px;}
+.ic-desc{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:12px;}
+.ic-progress{margin-bottom:10px;}
+.icp-label{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;}
+.icp-raised{color:var(--gold);font-family:'Orbitron',monospace;font-weight:700;}
+.icp-goal{color:var(--muted);}
+.icp-bar{height:7px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;}
+.icp-fill{height:100%;background:linear-gradient(90deg,var(--green-deep),var(--green-dark),var(--green));border-radius:4px;transition:width 0.8s ease;}
+.ic-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.icm-item{text-align:center;}
+.icm-val{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:var(--text);display:block;margin-bottom:2px;}
+.icm-lbl{font-size:8px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;}
+.ic-footer{display:flex;align-items:center;justify-content:space-between;}
+.ic-vt-badge{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;color:var(--gold);}
+.ic-invest-btn{padding:8px 18px;border-radius:20px;background:linear-gradient(135deg,#052e16,#22c55e);border:none;font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:1px;color:#f0fdf4;cursor:pointer;transition:all 0.2s;}
+.ic-invest-btn:hover{box-shadow:0 4px 14px rgba(34,197,94,0.35);}
+.ic-invest-btn.disabled{background:rgba(255,255,255,0.06);color:var(--muted);cursor:not-allowed;}
+
+/* ══════════ PROJECT VETTING ══════════ */
+#vetting{background:var(--bg);}
+.vetting-layout{display:grid;grid-template-columns:1fr 1fr;gap:50px;margin-top:48px;align-items:start;}
+.vetting-steps{display:flex;flex-direction:column;gap:0;}
+.vs-item{display:flex;gap:18px;position:relative;padding-bottom:28px;}
+.vs-item:last-child{padding-bottom:0;}
+.vs-item::before{content:'';position:absolute;left:19px;top:42px;width:2px;height:calc(100% - 24px);background:var(--border);}
+.vs-item:last-child::before{display:none;}
+.vs-num{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:14px;font-weight:700;flex-shrink:0;z-index:1;}
+.vs-num.done{background:rgba(74,222,128,0.12);border:2px solid rgba(74,222,128,0.4);color:var(--green);}
+.vs-num.active{background:rgba(245,200,66,0.12);border:2px solid rgba(245,200,66,0.4);color:var(--gold);box-shadow:0 0 16px rgba(245,200,66,0.2);}
+.vs-num.pending{background:rgba(255,255,255,0.04);border:2px solid var(--border);color:var(--muted);}
+.vs-content{}
+.vs-title{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--text);margin-bottom:5px;letter-spacing:0.5px;}
+.vs-desc{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:8px;}
+.vs-checks{display:flex;flex-direction:column;gap:3px;}
+.vc-item{font-size:11px;color:var(--text2);display:flex;align-items:center;gap:6px;}
+.vc-item::before{content:'✓';color:var(--green);font-size:10px;}
+/* Vetting score card */
+.vetting-score-card{background:linear-gradient(135deg,rgba(245,200,66,0.08),rgba(3,8,3,0.9));border:1px solid rgba(245,200,66,0.2);border-radius:20px;padding:24px;}
+.vsc-title{font-family:'Orbitron',monospace;font-size:12px;font-weight:700;color:var(--gold);letter-spacing:2px;margin-bottom:16px;}
+.score-display{text-align:center;margin-bottom:20px;}
+.sd-score{font-family:'Orbitron',monospace;font-size:56px;font-weight:900;color:var(--gold);filter:drop-shadow(0 0 18px rgba(245,200,66,0.4));line-height:1;}
+.sd-label{font-size:12px;color:var(--muted);margin-top:4px;}
+.sd-badge{display:inline-flex;margin-top:8px;padding:4px 14px;border-radius:20px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:var(--green);}
+.score-criteria{display:flex;flex-direction:column;gap:10px;}
+.sc-row{display:flex;align-items:center;gap:10px;}
+.scr-label{font-size:12px;color:var(--text2);width:120px;flex-shrink:0;}
+.scr-bar{flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
+.scr-fill{height:100%;border-radius:3px;transition:width 0.8s ease;}
+.scr-val{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:var(--gold);width:35px;text-align:right;flex-shrink:0;}
+
+/* ══════════ IDO FUNDRAISING ══════════ */
+#fundraising{background:var(--bg2);}
+.fundraising-layout{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:48px;align-items:start;}
+/* Investment tiers */
+.tier-cards{display:flex;flex-direction:column;gap:12px;}
+.tier-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;cursor:pointer;transition:all 0.2s;position:relative;}
+.tier-card:hover{border-color:var(--border2);}
+.tier-card.active{border-color:rgba(245,200,66,0.4);background:rgba(245,200,66,0.06);}
+.tier-card.featured{border-color:rgba(74,222,128,0.35);background:rgba(74,222,128,0.05);}
+.tc-featured-badge{position:absolute;top:-8px;right:14px;background:var(--green-dark);color:var(--bg);font-family:'Orbitron',monospace;font-size:8px;font-weight:700;padding:2px 8px;border-radius:10px;letter-spacing:1px;}
+.tier-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.tier-name{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--text);}
+.tier-allocation{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--gold);}
+.tier-desc{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:8px;}
+.tier-perks{display:flex;flex-wrap:wrap;gap:5px;}
+.tier-perk{font-size:10px;color:var(--text2);background:rgba(74,222,128,0.06);border:1px solid rgba(74,222,128,0.12);padding:2px 8px;border-radius:10px;}
+/* Investment form */
+.invest-form{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;}
+.if-title{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--green);letter-spacing:2px;margin-bottom:20px;}
+.if-project-select{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;}
+.if-project-select::-webkit-scrollbar{height:0;}
+.ips-item{flex-shrink:0;padding:8px 14px;border-radius:20px;border:1px solid var(--border);background:var(--surface);font-size:11px;cursor:pointer;transition:all 0.2s;font-family:'JetBrains Mono',monospace;color:var(--muted);}
+.ips-item:hover,.ips-item.active{border-color:rgba(245,200,66,0.4);background:rgba(245,200,66,0.08);color:var(--gold);}
+.amount-input{background:rgba(245,200,66,0.06);border:1px solid rgba(245,200,66,0.25);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.ai-input{flex:1;background:transparent;border:none;outline:none;font-family:'Orbitron',monospace;font-size:24px;font-weight:700;color:var(--gold);}
+.ai-unit{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--gold);font-weight:600;}
+.quick-amounts{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.qa-btn{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:var(--surface);font-family:'Orbitron',monospace;font-size:10px;font-weight:700;color:var(--muted);cursor:pointer;transition:all 0.2s;}
+.qa-btn:hover{border-color:rgba(245,200,66,0.35);color:var(--gold);background:rgba(245,200,66,0.08);}
+.invest-summary{background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:16px;}
+.is-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;}
+.isr-label{color:var(--muted);}
+.isr-val{font-family:'Orbitron',monospace;font-weight:700;color:var(--text);}
+.is-row.total .isr-label{color:var(--text);font-weight:700;font-size:13px;}
+.is-row.total .isr-val{color:var(--gold);font-size:14px;}
+
+/* ══════════ APPLY TO LAUNCH ══════════ */
+#apply{background:var(--bg);}
+.apply-layout{display:grid;grid-template-columns:1fr 1fr;gap:50px;margin-top:48px;align-items:start;}
+.apply-benefits{display:flex;flex-direction:column;gap:14px;}
+.ab-item{display:flex;align-items:flex-start;gap:14px;padding:16px 18px;background:var(--surface);border:1px solid var(--border);border-radius:14px;transition:all 0.2s;}
+.ab-item:hover{border-color:var(--border2);}
+.ab-icon{font-size:26px;flex-shrink:0;}
+.ab-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.ab-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+.apply-form-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;}
+.afc-title{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--gold);letter-spacing:2px;margin-bottom:20px;}
+/* Multi-step progress */
+.step-progress{display:flex;align-items:center;margin-bottom:24px;}
+.sp-step{display:flex;flex-direction:column;align-items:center;flex:1;}
+.sp-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:11px;font-weight:700;transition:all 0.3s;}
+.sp-dot.done{background:rgba(74,222,128,0.15);border:2px solid rgba(74,222,128,0.4);color:var(--green);}
+.sp-dot.active{background:rgba(245,200,66,0.15);border:2px solid rgba(245,200,66,0.5);color:var(--gold);box-shadow:0 0 12px rgba(245,200,66,0.25);}
+.sp-dot.pending{background:rgba(255,255,255,0.04);border:2px solid var(--border);color:var(--muted);}
+.sp-line{flex:1;height:2px;background:var(--border);}
+.sp-line.done{background:var(--green-dark);}
+.sp-label{font-size:9px;color:var(--muted);margin-top:4px;text-align:center;letter-spacing:0.5px;}
+.sp-step.active .sp-label,.sp-step.done .sp-label{color:var(--text2);}
+/* Form steps */
+.form-step{display:none;}
+.form-step.active{display:block;}
+
+/* ══════════ PORTFOLIO TRACKER ══════════ */
+#portfolio{background:var(--bg2);}
+.portfolio-layout{display:grid;grid-template-columns:1fr 2fr;gap:28px;margin-top:48px;}
+/* Summary card */
+.portfolio-summary{background:linear-gradient(135deg,rgba(5,46,22,0.5),rgba(245,200,66,0.06),rgba(3,8,3,0.9));border:1px solid rgba(74,222,128,0.2);border-radius:20px;padding:24px;}
+.ps-total-label{font-size:10px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;font-family:'JetBrains Mono',monospace;}
+.ps-total{font-family:'Orbitron',monospace;font-size:36px;font-weight:900;color:var(--gold);filter:drop-shadow(0 0 14px rgba(245,200,66,0.35));margin-bottom:4px;}
+.ps-usd{font-size:14px;color:var(--muted);margin-bottom:18px;}
+.ps-usd span{color:var(--green-light);}
+.ps-stats{display:flex;flex-direction:column;gap:8px;}
+.ps-stat-row{display:flex;justify-content:space-between;font-size:13px;}
+.pss-label{color:var(--muted);}
+.pss-val{font-family:'Orbitron',monospace;font-weight:700;color:var(--text);}
+.pss-val.up{color:var(--green);}
+.pss-val.dn{color:var(--red);}
+/* Portfolio investments table */
+.portfolio-table{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+.pt-header{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;padding:12px 18px;background:rgba(0,0,0,0.3);border-bottom:1px solid var(--border);}
+.pth-cell{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.pt-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.04);align-items:center;cursor:pointer;transition:background 0.2s;}
+.pt-row:last-child{border-bottom:none;}
+.pt-row:hover{background:rgba(74,222,128,0.03);}
+.ptr-project{display:flex;align-items:center;gap:10px;}
+.ptr-logo{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;border:1px solid var(--border);}
+.ptr-name{font-size:13px;font-weight:600;color:var(--text);}
+.ptr-sym{font-size:10px;color:var(--muted);}
+.ptr-val{font-family:'Orbitron',monospace;font-size:12px;font-weight:700;color:var(--text);}
+.ptr-chg.up{color:var(--green);}
+.ptr-chg.dn{color:var(--red);}
+
+/* ══════════ HOW IT WORKS ══════════ */
+#how{background:var(--bg);}
+.how-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:48px;}
+.how-section{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:26px;}
+.hs-title{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;letter-spacing:1px;margin-bottom:18px;}
+.hs-steps{display:flex;flex-direction:column;gap:14px;}
+.hss-item{display:flex;gap:12px;}
+.hss-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:10px;font-weight:700;flex-shrink:0;}
+.hss-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.hss-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+
+/* ══════════ CTA ══════════ */
+#cta{position:relative;z-index:1;padding:80px 0;}
+.cta-card{background:linear-gradient(135deg,rgba(5,46,22,0.6),rgba(245,200,66,0.07),rgba(3,8,3,0.9));border:1px solid rgba(245,200,66,0.2);border-radius:28px;padding:52px 40px;text-align:center;position:relative;overflow:hidden;max-width:900px;margin:0 auto;}
+.cta-glow{position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:500px;height:300px;background:radial-gradient(ellipse,rgba(245,200,66,0.07),transparent 65%);pointer-events:none;}
+.cta-h2{font-family:'Orbitron',monospace;font-size:clamp(22px,3.5vw,40px);font-weight:900;color:var(--text);margin-bottom:12px;}
+.cta-h2 span{color:var(--gold);}
+.cta-sub{font-size:15px;color:var(--muted);line-height:1.7;max-width:540px;margin:0 auto 28px;}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+
+/* ══════════ FOOTER ══════════ */
+footer{position:relative;z-index:1;border-top:1px solid var(--border);background:var(--bg);}
+.footer-inner{max-width:1200px;margin:0 auto;padding:50px 28px 28px;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:36px;}
+.fb-logo{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.fb-coin{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#fffbe0 0%,#f5c842 12%,#d4a017 28%,#8b6310 50%,#5c3f08 70%,#8b6310 85%,#f5c842 100%);box-shadow:0 0 0 1.5px #5c3f08,0 0 0 3px #f5c842,0 0 0 4.5px #8b6310;padding:2.5px;display:flex;align-items:center;justify-content:center;}
+.fb-ci{width:100%;height:100%;border-radius:50%;background:#0a150a;overflow:hidden;}
+.fb-ci img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.fb-name{font-family:'Orbitron',monospace;font-size:14px;font-weight:900;letter-spacing:2px;background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.footer-tagline{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;}
+.footer-social{display:flex;gap:8px;}
+.fs-btn{width:34px;height:34px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:all 0.2s;}
+.fs-btn:hover{border-color:var(--gold);}
+.footer-col h5{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.footer-col ul li a{font-size:13px;color:var(--muted);text-decoration:none;cursor:pointer;transition:color 0.2s;}
+.footer-col ul li a:hover{color:var(--green);}
+.footer-bottom{max-width:1200px;margin:0 auto;padding:16px 28px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-copy{font-size:11px;color:var(--muted);}
+.footer-copy strong{color:var(--gold);}
+
+/* RESPONSIVE */
+@media(max-width:1024px){.ido-grid{grid-template-columns:repeat(2,1fr);}.how-grid{grid-template-columns:1fr;}.footer-inner{grid-template-columns:1fr 1fr;}}
+@media(max-width:768px){.hero-inner{grid-template-columns:1fr;}.hero-right{display:none;}.vetting-layout{grid-template-columns:1fr;}.fundraising-layout{grid-template-columns:1fr;}.apply-layout{grid-template-columns:1fr;}.portfolio-layout{grid-template-columns:1fr;}.ido-grid{grid-template-columns:1fr;}.stats-band{grid-template-columns:repeat(3,1fr);}.nav-links{display:none;}.footer-inner{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="site-bg"><div class="bg-grid"></div><div class="bg-g1"></div><div class="bg-g2"></div><div class="bg-g3"></div><div class="bg-scan"></div></div>
+<div class="toast" id="toast"></div>
+
+<!-- INVEST MODAL -->
+<div class="overlay" id="overlay-invest">
+  <div class="modal">
+    <div class="modal-hdr"><span class="modal-title" id="inv-title">💰 INVEST IN IDO</span><div class="modal-close" onclick="closeOverlay('overlay-invest')">✕</div></div>
+    <div class="modal-body">
+      <div style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:18px;">
+        <div style="width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;" id="inv-logo">🚀</div>
+        <div><div style="font-family:'Orbitron',monospace;font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;" id="inv-name">Project</div><div style="font-size:12px;color:var(--muted);" id="inv-type">IDO</div></div>
+      </div>
+      <div class="mfield"><label>Investment Amount (VT)</label>
+        <input type="number" id="inv-amount" placeholder="Minimum 100 VT" oninput="calcInvest()">
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <button class="qa-btn" onclick="setInvAmt(100)">100 VT</button>
+        <button class="qa-btn" onclick="setInvAmt(500)">500 VT</button>
+        <button class="qa-btn" onclick="setInvAmt(1000)">1K VT</button>
+        <button class="qa-btn" onclick="setInvAmt(5000)">5K VT</button>
+      </div>
+      <div style="background:rgba(245,200,66,0.06);border:1px solid rgba(245,200,66,0.15);border-radius:12px;padding:14px;margin-bottom:16px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px;"><span style="color:var(--muted);">You invest</span><span style="font-family:'Orbitron',monospace;font-weight:700;color:var(--gold);" id="inv-vt-display">0 VT</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px;"><span style="color:var(--muted);">Tokens received</span><span style="font-family:'Orbitron',monospace;font-weight:700;color:var(--green);" id="inv-tokens">0 tokens</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px;"><span style="color:var(--muted);">Token price</span><span style="font-family:'Orbitron',monospace;font-weight:700;color:var(--text);" id="inv-price">0.01 VT</span></div>
+        <div style="display:flex;justify-content:space-between;padding-top:8px;border-top:1px solid rgba(245,200,66,0.12);font-size:13px;"><span style="color:var(--text);font-weight:700;">USDT Equivalent</span><span style="font-family:'Orbitron',monospace;font-weight:900;color:var(--gold);" id="inv-usdt">$0.00</span></div>
+      </div>
+      <div style="background:rgba(74,222,128,0.04);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:var(--muted);">Your VT balance: <strong style="color:var(--green);" id="inv-balance">842.50 VT</strong> · Vesting: 3 months cliff, 12 months linear</div>
+      <button class="mbtn mbtn-gold" onclick="confirmInvest()">🚀 CONFIRM INVESTMENT</button>
+      <button class="mbtn mbtn-outline" style="margin-top:8px;" onclick="closeOverlay('overlay-invest')">CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECT DETAIL MODAL -->
+<div class="overlay" id="overlay-detail">
+  <div class="modal" style="max-width:680px;">
+    <div class="modal-hdr"><span class="modal-title" id="det-title">PROJECT DETAIL</span><div class="modal-close" onclick="closeOverlay('overlay-detail')">✕</div></div>
+    <div class="modal-body" id="det-body"></div>
+  </div>
+</div>
+
+<!-- APPLY SUCCESS MODAL -->
+<div class="overlay" id="overlay-applied">
+  <div class="modal">
+    <div class="modal-body" style="text-align:center;padding:36px 24px 40px;">
+      <div style="font-size:64px;margin-bottom:14px;">🎉</div>
+      <div style="font-family:'Orbitron',monospace;font-size:20px;font-weight:900;color:var(--gold);margin-bottom:8px;">APPLICATION SUBMITTED!</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:6px;">Your project has been submitted for review.</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:22px;" id="app-ref">Ref: VLP-#0000</div>
+      <div style="background:rgba(74,222,128,0.05);border:1px solid rgba(74,222,128,0.15);border-radius:12px;padding:14px;margin-bottom:20px;font-size:12px;color:var(--muted);line-height:1.7;text-align:left;">
+        ✓ Initial review within 48 hours<br>✓ Community vote if approved<br>✓ You'll be notified via Telegram<br>✓ Token contract audit required before launch
+      </div>
+      <button class="mbtn mbtn-green" onclick="closeOverlay('overlay-applied')">BACK TO LAUNCHPAD</button>
+    </div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="#hero" class="nav-logo">
+    <div class="nav-coin"><div class="nav-coin-inner"><img src="/mnt/user-data/uploads/Vura_Stream_Transparent__bAckground_1.png" alt="VL"></div></div>
+    <span class="nav-logo-text">VURA LAUNCHPAD</span>
+  </a>
+  <div class="nav-links">
+    <span class="nav-link active" onclick="goTo('#idos')">🚀 Live IDOs</span>
+    <span class="nav-link" onclick="goTo('#vetting')">🛡 Vetting</span>
+    <span class="nav-link" onclick="goTo('#fundraising')">💰 Invest</span>
+    <span class="nav-link" onclick="goTo('#portfolio')">📊 Portfolio</span>
+    <span class="nav-link" onclick="goTo('#apply')">📝 Apply</span>
+    <span class="nav-link" onclick="goTo('#how')">❓ How it Works</span>
+  </div>
+  <div class="nav-right">
+    <div class="nav-vt"><span class="nvt-dot"></span><span id="nav-vt-price">1 VT = $0.0100</span></div>
+    <button class="btn-gold" style="padding:9px 20px;font-size:10px;" onclick="goTo('#apply')">📝 APPLY TO LAUNCH</button>
+  </div>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <div class="ti"><span class="ti-name">$VT PRICE</span><span class="ti-val" id="tick-price">$0.0100</span><span class="ti-up">▲ +4.38%</span></div>
+    <div class="ti"><span class="ti-name">TOTAL RAISED</span><span class="ti-val">4.2M VT</span><span class="ti-up">↑</span></div>
+    <div class="ti"><span class="ti-name">PROJECTS LAUNCHED</span><span class="ti-val">24</span></div>
+    <div class="ti"><span class="ti-name">LIVE IDOs</span><span class="ti-val">5</span><span class="ti-up">● NOW</span></div>
+    <div class="ti"><span class="ti-name">AVG ROI</span><span class="ti-val">+284%</span><span class="ti-up">▲</span></div>
+    <div class="ti"><span class="ti-name">INVESTORS</span><span class="ti-val">8,420</span></div>
+    <div class="ti"><span class="ti-name">VETTING SCORE</span><span class="ti-val">85/100 min</span></div>
+    <div class="ti"><span class="ti-name">$VT PRICE</span><span class="ti-val">$0.0100</span><span class="ti-up">▲ +4.38%</span></div>
+    <div class="ti"><span class="ti-name">TOTAL RAISED</span><span class="ti-val">4.2M VT</span><span class="ti-up">↑</span></div>
+    <div class="ti"><span class="ti-name">PROJECTS LAUNCHED</span><span class="ti-val">24</span></div>
+    <div class="ti"><span class="ti-name">LIVE IDOs</span><span class="ti-val">5</span><span class="ti-up">● NOW</span></div>
+    <div class="ti"><span class="ti-name">AVG ROI</span><span class="ti-val">+284%</span><span class="ti-up">▲</span></div>
+    <div class="ti"><span class="ti-name">INVESTORS</span><span class="ti-val">8,420</span></div>
+    <div class="ti"><span class="ti-name">VETTING SCORE</span><span class="ti-val">85/100 min</span></div>
+  </div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow"><span class="eyebrow-dot"></span>Powered by $VT · BNB Chain · Audited</div>
+      <h1 class="hero-h1">
+        <span class="g">Launch the Next</span>
+        <span class="gr">Big Token.</span>
+      </h1>
+      <p class="hero-sub">Vura Launchpad is the <strong>community-first token launch platform</strong> built on $VT. Vetted projects, fair IDOs, and community fundraising — all transparent and on-chain.</p>
+      <div class="hero-btns">
+        <button class="btn-gold" onclick="goTo('#idos')">🚀 VIEW LIVE IDOs</button>
+        <button class="btn-green" onclick="goTo('#apply')">📝 APPLY TO LAUNCH</button>
+        <button class="btn-outline" onclick="goTo('#how')">How it Works</button>
+      </div>
+      <div class="hero-trust">
+        <div class="ht-item">🛡 <span>Audited contracts</span></div>
+        <div class="ht-item">🗳 <span>DAO vetting</span></div>
+        <div class="ht-item">💰 <span>Pay in $VT</span></div>
+        <div class="ht-item">🔒 <span>Locked liquidity</span></div>
+        <div class="ht-item">📊 <span>Transparent raises</span></div>
+      </div>
+    </div>
+    <div class="hero-right reveal-right">
+      <!-- Featured active IDO -->
+      <div class="featured-ido">
+        <div class="fido-glow"></div>
+        <div class="fido-live"><span class="fido-live-dot"></span>LIVE IDO — ENDS IN</div>
+        <div class="fido-countdown" id="hero-countdown">
+          <div class="fc-box"><span class="fc-val" id="hcd">02</span><span class="fc-lbl">Days</span></div>
+          <div class="fc-box"><span class="fc-val" id="hch">14</span><span class="fc-lbl">Hours</span></div>
+          <div class="fc-box"><span class="fc-val" id="hcm">32</span><span class="fc-lbl">Mins</span></div>
+          <div class="fc-box"><span class="fc-val" id="hcs">08</span><span class="fc-lbl">Secs</span></div>
+        </div>
+        <div class="fido-top">
+          <div class="fido-logo">🌿</div>
+          <div><div class="fido-name">GreenChain Token</div><div class="fido-symbol">$GCT · ERC-20 · BNB Chain</div></div>
+        </div>
+        <div class="fido-desc">Sustainable blockchain infrastructure for carbon credit trading. Backed by real-world carbon offset projects.</div>
+        <div class="fido-progress-label"><span class="fpl-raised">2,840,000 VT raised</span><span class="fpl-goal">of 4,000,000 VT goal</span></div>
+        <div class="fido-bar"><div class="fido-bar-fill" style="width:71%;"></div></div>
+        <div class="fido-meta">
+          <div class="fmeta-item"><span class="fmeta-val">71%</span><span class="fmeta-lbl">Filled</span></div>
+          <div class="fmeta-item"><span class="fmeta-val">0.01 VT</span><span class="fmeta-lbl">Token Price</span></div>
+          <div class="fmeta-item"><span class="fmeta-val">1,284</span><span class="fmeta-lbl">Investors</span></div>
+        </div>
+        <button class="btn-gold" style="width:100%;padding:12px;" onclick="openInvest('GreenChain Token','🌿','IDO',0.01)">💰 INVEST NOW — MIN 100 VT</button>
+      </div>
+      <!-- Mini IDOs strip -->
+      <div class="mini-ido-strip">
+        <div class="mini-ido" onclick="openInvest('VuraLearn Token','📚','ICO',0.005)">
+          <div class="mi-logo" style="background:linear-gradient(135deg,#0a0a2a,#050510);">📚</div>
+          <div class="mi-info"><div class="mi-name">VuraLearn Token</div><div class="mi-type">ICO · Education · 0.005 VT</div></div>
+          <div class="mi-right"><div class="mi-pct">89%</div><div class="mi-bar"><div class="mi-bar-fill" style="width:89%;"></div></div></div>
+        </div>
+        <div class="mini-ido" onclick="openInvest('DeFi Yield Pro','🏦','IDO',0.02)">
+          <div class="mi-logo" style="background:linear-gradient(135deg,#1a0a00,#0a0503);">🏦</div>
+          <div class="mi-info"><div class="mi-name">DeFi Yield Pro</div><div class="mi-type">IDO · DeFi · 0.02 VT</div></div>
+          <div class="mi-right"><div class="mi-pct">45%</div><div class="mi-bar"><div class="mi-bar-fill" style="width:45%;"></div></div></div>
+        </div>
+        <div class="mini-ido" onclick="openInvest('VuraGames Token','🎮','ICO',0.008)">
+          <div class="mi-logo" style="background:linear-gradient(135deg,#1a0a1a,#050308);">🎮</div>
+          <div class="mi-info"><div class="mi-name">VuraGames Token</div><div class="mi-type">ICO · Gaming · 0.008 VT</div></div>
+          <div class="mi-right"><div class="mi-pct">62%</div><div class="mi-bar"><div class="mi-bar-fill" style="width:62%;"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAND -->
+<div class="stats-band reveal">
+  <div class="sb-item"><span class="sb-val">24</span><span class="sb-lbl">Projects Launched</span></div>
+  <div class="sb-item"><span class="sb-val">4.2M VT</span><span class="sb-lbl">Total Raised</span></div>
+  <div class="sb-item"><span class="sb-val">8,420</span><span class="sb-lbl">Investors</span></div>
+  <div class="sb-item"><span class="sb-val">+284%</span><span class="sb-lbl">Avg ROI</span></div>
+  <div class="sb-item"><span class="sb-val">100%</span><span class="sb-lbl">Audited</span></div>
+</div>
+
+<!-- LIVE IDOs -->
+<section id="idos">
+  <div class="max-w">
+    <div class="reveal">
+      <div class="section-tag">Live Now</div>
+      <h2 class="section-title">Active IDOs & ICOs</h2>
+      <p class="section-sub">All projects vetted, audited, and approved by the Vura DAO. Invest in VT — transparent, on-chain, fair.</p>
+    </div>
+    <div class="ido-filters reveal" style="margin-top:24px;" id="ido-filters"></div>
+    <div class="ido-grid" id="ido-grid"></div>
+  </div>
+</section>
+
+<!-- VETTING SYSTEM -->
+<section id="vetting">
+  <div class="max-w">
+    <div class="reveal">
+      <div class="section-tag">Project Vetting</div>
+      <h2 class="section-title">The Strictest Vetting in Web3</h2>
+      <p class="section-sub">Every project on Vura Launchpad passes a rigorous 5-step vetting process. No rugs. No scams. Only serious builders.</p>
+    </div>
+    <div class="vetting-layout">
+      <div class="vetting-steps reveal-left">
+        <div class="vs-item">
+          <div class="vs-num done">1</div>
+          <div class="vs-content">
+            <div class="vs-title">Application Review</div>
+            <div class="vs-desc">Team submits full project details — whitepaper, tokenomics, team doxx, roadmap, and GitHub repository for technical review.</div>
+            <div class="vs-checks">
+              <div class="vc-item">Whitepaper completeness check</div>
+              <div class="vc-item">Team identity verification (KYC)</div>
+              <div class="vc-item">GitHub activity & code quality</div>
+            </div>
+          </div>
+        </div>
+        <div class="vs-item">
+          <div class="vs-num done">2</div>
+          <div class="vs-content">
+            <div class="vs-title">Smart Contract Audit</div>
+            <div class="vs-desc">All token contracts are audited by our partner security firm. Any critical vulnerabilities must be fixed before proceeding.</div>
+            <div class="vs-checks">
+              <div class="vc-item">Automated vulnerability scanning</div>
+              <div class="vc-item">Manual code review by auditors</div>
+              <div class="vc-item">Public audit report published</div>
+            </div>
+          </div>
+        </div>
+        <div class="vs-item">
+          <div class="vs-num active">3</div>
+          <div class="vs-content">
+            <div class="vs-title">Community Vetting (DAO Vote)</div>
+            <div class="vs-desc">VT holders vote on whether the project should proceed to launch. Minimum 70% approval with 500K VP quorum required.</div>
+            <div class="vs-checks">
+              <div class="vc-item">7-day DAO community vote</div>
+              <div class="vc-item">Public Q&A with project team</div>
+              <div class="vc-item">Community feedback period</div>
+            </div>
+          </div>
+        </div>
+        <div class="vs-item">
+          <div class="vs-num pending">4</div>
+          <div class="vs-content">
+            <div class="vs-title">Tokenomics Review</div>
+            <div class="vs-desc">We review token distribution, vesting schedules, and inflation model to ensure fair and sustainable tokenomics.</div>
+            <div class="vs-checks">
+              <div class="vc-item">Max 20% team allocation</div>
+              <div class="vc-item">Minimum 12-month team vesting</div>
+              <div class="vc-item">Liquidity lock verified</div>
+            </div>
+          </div>
+        </div>
+        <div class="vs-item">
+          <div class="vs-num pending">5</div>
+          <div class="vs-content">
+            <div class="vs-title">Final Approval & Launch</div>
+            <div class="vs-desc">Project receives official Vura Launchpad approval badge, liquidity is locked, and the IDO goes live on the platform.</div>
+            <div class="vs-checks">
+              <div class="vc-item">Liquidity locked for 12 months</div>
+              <div class="vc-item">Launch announcement on all channels</div>
+              <div class="vc-item">Post-launch monitoring begins</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal-right">
+        <div class="vetting-score-card">
+          <div class="vsc-title">📊 VETTING SCORE — GREENCHAIN</div>
+          <div class="score-display">
+            <div class="sd-score">91</div>
+            <div class="sd-label">out of 100 · Minimum required: 85</div>
+            <div class="sd-badge">✓ APPROVED FOR LAUNCH</div>
+          </div>
+          <div class="score-criteria">
+            <div class="sc-row"><span class="scr-label">Team Transparency</span><div class="scr-bar"><div class="scr-fill" style="width:95%;background:linear-gradient(90deg,var(--green-deep),var(--green));"></div></div><span class="scr-val">95</span></div>
+            <div class="sc-row"><span class="scr-label">Code Quality</span><div class="scr-bar"><div class="scr-fill" style="width:88%;background:linear-gradient(90deg,var(--green-deep),var(--green));"></div></div><span class="scr-val">88</span></div>
+            <div class="sc-row"><span class="scr-label">Tokenomics</span><div class="scr-bar"><div class="scr-fill" style="width:90%;background:linear-gradient(90deg,var(--green-deep),var(--green));"></div></div><span class="scr-val">90</span></div>
+            <div class="sc-row"><span class="scr-label">Community Vote</span><div class="scr-bar"><div class="scr-fill" style="width:92%;background:linear-gradient(90deg,var(--green-deep),var(--green));"></div></div><span class="scr-val">92</span></div>
+            <div class="sc-row"><span class="scr-label">Audit Score</span><div class="scr-bar"><div class="scr-fill" style="width:87%;background:linear-gradient(90deg,var(--green-deep),var(--green));"></div></div><span class="scr-val">87</span></div>
+            <div class="sc-row"><span class="scr-label">Liquidity Lock</span><div class="scr-bar"><div class="scr-fill" style="width:100%;background:linear-gradient(90deg,var(--green-deep),var(--green));"></div></div><span class="scr-val">100</span></div>
+          </div>
+          <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:7px;">
+            <div style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;">✅ Contract audited by CertiK</div>
+            <div style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;">✅ Team KYC verified</div>
+            <div style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;">✅ DAO approved — 87% FOR</div>
+            <div style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;">✅ Liquidity locked 12 months</div>
+            <div style="font-size:11px;color:var(--red);display:flex;align-items:center;gap:6px;">⚠ Whitepaper minor revision needed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FUNDRAISING / INVEST -->
+<section id="fundraising">
+  <div class="max-w">
+    <div class="reveal">
+      <div class="section-tag">Invest</div>
+      <h2 class="section-title">Invest in Vetted Projects</h2>
+      <p class="section-sub">Choose your tier, pick a project, and invest in $VT. All investments are locked until vesting — ensuring healthy, committed communities.</p>
+    </div>
+    <div class="fundraising-layout">
+      <div class="reveal-left">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:14px;">Investor Tiers</div>
+        <div class="tier-cards" id="tier-cards"></div>
+      </div>
+      <div class="reveal-right">
+        <div class="invest-form">
+          <div class="if-title">💰 QUICK INVEST</div>
+          <div style="font-size:10px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;font-family:'JetBrains Mono',monospace;">Select Project</div>
+          <div class="if-project-select" id="project-select"></div>
+          <div class="amount-input">
+            <input class="ai-input" type="number" id="quick-invest-amount" placeholder="0" value="500" oninput="updateQuickCalc()">
+            <span class="ai-unit">VT</span>
+          </div>
+          <div class="quick-amounts">
+            <button class="qa-btn" onclick="setQuickAmt(100)">100</button>
+            <button class="qa-btn" onclick="setQuickAmt(500)">500</button>
+            <button class="qa-btn" onclick="setQuickAmt(1000)">1K</button>
+            <button class="qa-btn" onclick="setQuickAmt(5000)">5K</button>
+            <button class="qa-btn" onclick="setQuickAmt(10000)">10K</button>
+          </div>
+          <div class="invest-summary">
+            <div class="is-row"><span class="isr-label">You invest</span><span class="isr-val" id="qi-invest">500 VT</span></div>
+            <div class="is-row"><span class="isr-label">Tokens received</span><span class="isr-val" id="qi-tokens">50,000 tokens</span></div>
+            <div class="is-row"><span class="isr-label">Token price</span><span class="isr-val">0.01 VT</span></div>
+            <div class="is-row"><span class="isr-label">USDT equivalent</span><span class="isr-val" id="qi-usdt">≈ $5.00</span></div>
+            <div class="is-row"><span class="isr-label">Vesting</span><span class="isr-val">3M cliff · 12M linear</span></div>
+            <div class="is-row total"><span class="isr-label">Platform Fee</span><span class="isr-val" id="qi-fee">5 VT (1%)</span></div>
+          </div>
+          <button class="btn-gold" style="width:100%;padding:13px;" onclick="openQuickInvest()">🚀 INVEST NOW</button>
+          <div style="text-align:center;margin-top:10px;font-size:11px;color:var(--muted);">Your VT balance: <strong style="color:var(--green);" id="invest-bal">842.50 VT</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO TRACKER -->
+<section id="portfolio">
+  <div class="max-w">
+    <div class="reveal">
+      <div class="section-tag">Portfolio</div>
+      <h2 class="section-title">Your Launchpad Portfolio</h2>
+      <p class="section-sub">Track all your IDO investments, vesting schedules, and returns in one place.</p>
+    </div>
+    <div class="portfolio-layout">
+      <div class="reveal-left">
+        <div class="portfolio-summary">
+          <div class="ps-total-label">Total Invested</div>
+          <div class="ps-total">3,240 VT</div>
+          <div class="ps-usd">≈ <span>$32.40 USD</span></div>
+          <div class="ps-stats">
+            <div class="ps-stat-row"><span class="pss-label">Portfolio Value</span><span class="pss-val">4,120 VT</span></div>
+            <div class="ps-stat-row"><span class="pss-label">Total Return</span><span class="pss-val up">+27.2%</span></div>
+            <div class="ps-stat-row"><span class="pss-label">Projects</span><span class="pss-val">4</span></div>
+            <div class="ps-stat-row"><span class="pss-label">Vesting Status</span><span class="pss-val">2 Active</span></div>
+            <div class="ps-stat-row"><span class="pss-label">Claimable Now</span><span class="pss-val up">420 VT</span></div>
+          </div>
+          <button style="width:100%;margin-top:16px;padding:12px;border-radius:12px;background:linear-gradient(135deg,#8b6914,#f5c842);color:#1a0a00;font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:2px;cursor:pointer;border:none;" onclick="showToast('💰 420 VT Claimed!','gold')">💰 CLAIM 420 VT</button>
+        </div>
+      </div>
+      <div class="reveal-right">
+        <div class="portfolio-table" id="portfolio-table"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPLY TO LAUNCH -->
+<section id="apply">
+  <div class="max-w">
+    <div class="reveal">
+      <div class="section-tag">Launch Your Project</div>
+      <h2 class="section-title">Apply to Launch on Vura</h2>
+      <p class="section-sub">Ready to raise funds for your project? Apply here. We review every application within 48 hours.</p>
+    </div>
+    <div class="apply-layout">
+      <div class="apply-benefits reveal-left">
+        <div class="ab-item"><div class="ab-icon">🌍</div><div><div class="ab-title">Access 8,420+ Investors</div><div class="ab-desc">Your project is immediately visible to thousands of active VT holders and crypto investors in the Vura community.</div></div></div>
+        <div class="ab-item"><div class="ab-icon">🛡</div><div><div class="ab-title">Credibility via Vetting</div><div class="ab-desc">The Vura vetting badge signals serious builders. Projects that pass our process get immediate trust from investors.</div></div></div>
+        <div class="ab-item"><div class="ab-icon">💰</div><div><div class="ab-title">Raise in $VT</div><div class="ab-desc">Raise funds in VT — then convert to any currency. Instant settlement, no bank required, global investors.</div></div></div>
+        <div class="ab-item"><div class="ab-icon">📢</div><div><div class="ab-title">Full Marketing Support</div><div class="ab-desc">We promote every approved IDO across Telegram, Twitter, Discord, and the Vura Stream platform.</div></div></div>
+        <div class="ab-item"><div class="ab-icon">⚙️</div><div><div class="ab-title">Dev Studio Integration</div><div class="ab-desc">Automatically listed in Vura Dev Studio's ecosystem. Get API access, SDK support, and plugin system access for free.</div></div></div>
+        <button class="btn-gold" style="margin-top:8px;width:100%;" onclick="goTo('#apply')">🚀 START YOUR APPLICATION</button>
+      </div>
+      <div class="reveal-right">
+        <div class="apply-form-card">
+          <div class="afc-title">📝 LAUNCH APPLICATION</div>
+          <!-- Step progress -->
+          <div class="step-progress" id="step-progress"></div>
+          <!-- Step 1 -->
+          <div class="form-step active" id="step1">
+            <div class="mfield"><label>Project Name</label><input type="text" id="app-name" placeholder="e.g. GreenChain Protocol"></div>
+            <div class="mfield"><label>Token Symbol</label><input type="text" placeholder="e.g. GCP" maxlength="8"></div>
+            <div class="mfield"><label>Project Category</label>
+              <select><option>DeFi / Finance</option><option>NFT / Gaming</option><option>Infrastructure</option><option>Social / Community</option><option>Education</option><option>AI / Data</option><option>Other</option></select>
+            </div>
+            <div class="mfield"><label>Short Description</label><textarea placeholder="Describe your project in 2-3 sentences..."></textarea></div>
+            <button class="mbtn mbtn-green" onclick="nextStep(2)">NEXT: Tokenomics →</button>
+          </div>
+          <!-- Step 2 -->
+          <div class="form-step" id="step2">
+            <div class="mfield"><label>Total Supply</label><input type="number" placeholder="e.g. 100,000,000"></div>
+            <div class="mfield"><label>IDO/ICO Type</label>
+              <select><option>IDO (Decentralized)</option><option>ICO (Centralized)</option><option>Community Round</option><option>Private Sale + Public</option></select>
+            </div>
+            <div class="mfield"><label>Fundraising Goal (VT)</label><input type="number" placeholder="e.g. 4000000"></div>
+            <div class="mfield"><label>Token Price (VT)</label><input type="number" placeholder="e.g. 0.01" step="0.001"></div>
+            <div style="display:flex;gap:10px;margin-top:4px;">
+              <button class="mbtn mbtn-outline" style="flex:1;" onclick="nextStep(1)">← Back</button>
+              <button class="mbtn mbtn-green" style="flex:2;" onclick="nextStep(3)">NEXT: Team & Docs →</button>
+            </div>
+          </div>
+          <!-- Step 3 -->
+          <div class="form-step" id="step3">
+            <div class="mfield"><label>Team Telegram</label><input type="text" placeholder="@yourteam"></div>
+            <div class="mfield"><label>Whitepaper URL</label><input type="url" placeholder="https://docs.yourproject.com"></div>
+            <div class="mfield"><label>GitHub Repository</label><input type="url" placeholder="https://github.com/yourproject"></div>
+            <div class="mfield"><label>Website</label><input type="url" placeholder="https://yourproject.com"></div>
+            <div style="display:flex;gap:10px;margin-top:4px;">
+              <button class="mbtn mbtn-outline" style="flex:1;" onclick="nextStep(2)">← Back</button>
+              <button class="mbtn mbtn-green" style="flex:2;" onclick="nextStep(4)">NEXT: Review →</button>
+            </div>
+          </div>
+          <!-- Step 4 -->
+          <div class="form-step" id="step4">
+            <div style="background:rgba(74,222,128,0.04);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px;">
+              <div style="font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:var(--green);margin-bottom:10px;">APPLICATION SUMMARY</div>
+              <div id="app-summary" style="font-size:13px;color:var(--text2);line-height:1.8;"></div>
+            </div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:14px;">By submitting, you agree to the Vura Launchpad terms. Application fee: <strong style="color:var(--gold);">500 VT</strong> (non-refundable if rejected).</div>
+            <div style="display:flex;gap:10px;">
+              <button class="mbtn mbtn-outline" style="flex:1;" onclick="nextStep(3)">← Back</button>
+              <button class="mbtn mbtn-gold" style="flex:2;" onclick="submitApplication()">🚀 SUBMIT APPLICATION</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="max-w">
+    <div class="reveal" style="text-align:center;">
+      <div class="section-tag">How it Works</div>
+      <h2 class="section-title">Simple. Fair. Transparent.</h2>
+    </div>
+    <div class="how-grid">
+      <div class="how-section reveal">
+        <div class="hs-title" style="color:var(--green);">🚀 FOR PROJECTS</div>
+        <div class="hs-steps">
+          <div class="hss-item"><div class="hss-num" style="background:rgba(74,222,128,0.1);border:2px solid rgba(74,222,128,0.3);color:var(--green);">1</div><div><div class="hss-title">Apply & Submit</div><div class="hss-desc">Fill out the application form with your project details, whitepaper, and tokenomics. 500 VT application fee.</div></div></div>
+          <div class="hss-item"><div class="hss-num" style="background:rgba(74,222,128,0.1);border:2px solid rgba(74,222,128,0.3);color:var(--green);">2</div><div><div class="hss-title">Vetting Process</div><div class="hss-desc">Pass our 5-step vetting: audit, KYC, DAO vote, tokenomics review. Minimum score of 85/100 required.</div></div></div>
+          <div class="hss-item"><div class="hss-num" style="background:rgba(74,222,128,0.1);border:2px solid rgba(74,222,128,0.3);color:var(--green);">3</div><div><div class="hss-title">Launch IDO/ICO</div><div class="hss-desc">Your IDO goes live to 8,420+ investors. Marketing support across all Vura channels included.</div></div></div>
+          <div class="hss-item"><div class="hss-num" style="background:rgba(74,222,128,0.1);border:2px solid rgba(74,222,128,0.3);color:var(--green);">4</div><div><div class="hss-title">Receive Funds</div><div class="hss-desc">Funds released according to vesting schedule. Platform fee: 3% of raise. Liquidity auto-locked.</div></div></div>
+        </div>
+      </div>
+      <div class="how-section reveal">
+        <div class="hs-title" style="color:var(--gold);">💰 FOR INVESTORS</div>
+        <div class="hs-steps">
+          <div class="hss-item"><div class="hss-num" style="background:rgba(245,200,66,0.1);border:2px solid rgba(245,200,66,0.3);color:var(--gold);">1</div><div><div class="hss-title">Connect Wallet</div><div class="hss-desc">Connect your Vura Wallet with VT balance. No KYC required for investments under 10,000 VT.</div></div></div>
+          <div class="hss-item"><div class="hss-num" style="background:rgba(245,200,66,0.1);border:2px solid rgba(245,200,66,0.3);color:var(--gold);">2</div><div><div class="hss-title">Browse & Research</div><div class="hss-desc">Review vetted projects, read audit reports, check community scores, and watch team Q&A sessions.</div></div></div>
+          <div class="hss-item"><div class="hss-num" style="background:rgba(245,200,66,0.1);border:2px solid rgba(245,200,66,0.3);color:var(--gold);">3</div><div><div class="hss-title">Invest in VT</div><div class="hss-desc">Choose a tier, set your amount, and invest. Minimum 100 VT. Smart contract holds funds securely.</div></div></div>
+          <div class="hss-item"><div class="hss-num" style="background:rgba(245,200,66,0.1);border:2px solid rgba(245,200,66,0.3);color:var(--gold);">4</div><div><div class="hss-title">Claim Tokens</div><div class="hss-desc">After vesting cliff, claim your tokens directly to Vura Wallet. Track all investments in your portfolio.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="max-w">
+    <div class="cta-card reveal">
+      <div class="cta-glow"></div>
+      <h2 class="cta-h2">Ready to <span>Launch</span> or <span>Invest</span>?</h2>
+      <p class="cta-sub">Join the fastest-growing Web3 launchpad in the $VT ecosystem. Whether you're building the next big project or looking for early-stage opportunities — Vura Launchpad is your platform.</p>
+      <div class="cta-btns">
+        <button class="btn-gold" onclick="goTo('#apply')">📝 APPLY TO LAUNCH</button>
+        <button class="btn-green" onclick="goTo('#idos')">🚀 BROWSE LIVE IDOs</button>
+        <button class="btn-outline" onclick="goTo('#portfolio')">📊 MY PORTFOLIO</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="fb-logo"><div class="fb-coin"><div class="fb-ci"><img src="/mnt/user-data/uploads/Vura_Stream_Transparent__bAckground_1.png" alt="VL"></div></div><span class="fb-name">VURA LAUNCHPAD</span></div>
+      <p class="footer-tagline">The community-first token launch platform built on $VT. Vetted projects, fair IDOs, and transparent fundraising — all on BNB Chain.</p>
+      <div class="footer-social">
+        <div class="fs-btn" onclick="showToast('✈️ Telegram','')">✈️</div>
+        <div class="fs-btn" onclick="showToast('𝕏 Twitter','')">𝕏</div>
+        <div class="fs-btn" onclick="showToast('💬 Discord','')">💬</div>
+      </div>
+    </div>
+    <div class="footer-col"><h5>Launchpad</h5><ul>
+      <li><a onclick="goTo('#idos')">Live IDOs</a></li>
+      <li><a onclick="goTo('#vetting')">Vetting Process</a></li>
+      <li><a onclick="goTo('#portfolio')">My Portfolio</a></li>
+      <li><a onclick="goTo('#apply')">Apply to Launch</a></li>
+    </ul></div>
+    <div class="footer-col"><h5>Ecosystem</h5><ul>
+      <li><a>Vura Token</a></li>
+      <li><a>Vura DAO</a></li>
+      <li><a>Vura Dev Studio</a></li>
+      <li><a>Vura Market</a></li>
+      <li><a>Vura Pay</a></li>
+    </ul></div>
+    <div class="footer-col"><h5>Legal</h5><ul>
+      <li><a>Terms of Service</a></li>
+      <li><a>Privacy Policy</a></li>
+      <li><a>Risk Disclaimer</a></li>
+      <li><a>Audit Reports</a></li>
+      <li><a href="https://t.me/VuraOfficial">Telegram</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025–2027 <strong>Vura Launchpad</strong>. Powered by <strong>$VT</strong> on BNB Chain. Investments carry risk — DYOR.</div>
+    <div style="display:flex;gap:16px;"><a style="font-size:11px;color:var(--muted);text-decoration:none;">Privacy</a><a style="font-size:11px;color:var(--muted);text-decoration:none;">Terms</a><a style="font-size:11px;color:var(--muted);text-decoration:none;">Risk</a></div>
+  </div>
+</footer>
+
+<script>
+// ═══ DATA ═══
+let vtBalance=842.50;
+let vtPrice=0.01;
+let currentInvestProject={name:'',logo:'',type:'',price:0.01};
+let appStep=1;
+const TOTAL_STEPS=4;
+
+const IDOS=[
+  {id:1,name:'GreenChain Token',symbol:'GCT',emoji:'🌿',bg:'linear-gradient(135deg,#052e16,#0a150a)',type:'IDO',status:'live',raised:2840000,goal:4000000,price:0.01,investors:1284,desc:'Sustainable blockchain for carbon credit trading. Real-world asset backed.',tags:['green','defi','bnb'],score:91,vesting:'3M cliff · 12M linear',minInvest:100,audit:'CertiK'},
+  {id:2,name:'VuraLearn Token',symbol:'VLT',emoji:'📚',bg:'linear-gradient(135deg,#0a0a2a,#050510)',type:'ICO',status:'live',raised:1780000,goal:2000000,price:0.005,investors:892,desc:'Learn-to-earn education platform. Earn VLT by completing crypto courses.',tags:['education','w2e','community'],score:88,vesting:'No cliff · 6M linear',minInvest:50,audit:'Hacken'},
+  {id:3,name:'DeFi Yield Pro',symbol:'DYP',emoji:'🏦',bg:'linear-gradient(135deg,#1a0a00,#0a0503)',type:'IDO',status:'live',raised:900000,goal:2000000,price:0.02,investors:421,desc:'Automated yield optimization protocol. 3x-5x APY through smart vaults.',tags:['defi','yield','bsc'],score:85,vesting:'1M cliff · 18M linear',minInvest:200,audit:'PeckShield'},
+  {id:4,name:'VuraGames Token',symbol:'VGT',emoji:'🎮',bg:'linear-gradient(135deg,#1a0a1a,#050308)',type:'ICO',status:'live',raised:620000,goal:1000000,price:0.008,investors:312,desc:'In-game currency for Vura Play ecosystem. Earn VGT through tournaments.',tags:['gaming','p2e','vura'],score:90,vesting:'2M cliff · 9M linear',minInvest:100,audit:'CertiK'},
+  {id:5,name:'VuraPay Plus',symbol:'VPP',emoji:'💳',bg:'linear-gradient(135deg,#0d4038,#0f766e)',type:'IDO',status:'live',raised:1200000,goal:3000000,price:0.015,investors:642,desc:'Premium payment infrastructure expanding VuraPay with cross-chain support.',tags:['payments','defi','vura'],score:93,vesting:'No cliff · 12M linear',minInvest:100,audit:'CertiK'},
+  {id:6,name:'AI Data Layer',symbol:'ADL',emoji:'🤖',bg:'linear-gradient(135deg,#1a1a0a,#0a0a03)',type:'IDO',status:'upcoming',raised:0,goal:5000000,price:0.025,investors:0,desc:'Decentralized AI data marketplace. Pay data providers in ADL, train models on-chain.',tags:['ai','data','infrastructure'],score:87,vesting:'6M cliff · 24M linear',minInvest:500,audit:'Pending'},
+  {id:7,name:'VuraStream Creator',symbol:'VSC',emoji:'📺',bg:'linear-gradient(135deg,#1a0a00,#0a0500)',type:'ICO',status:'ended',raised:3000000,goal:3000000,price:0.012,investors:1842,desc:'Creator economy token for Vura Stream platform. Fully sold out.',tags:['stream','creator','vura'],score:95,vesting:'1M cliff · 18M linear',minInvest:100,audit:'CertiK'},
+];
+
+const TIERS=[
+  {name:'Starter',allocation:'100 – 999 VT',desc:'Basic access to all IDOs. Standard allocation.',perks:['All IDO access','Standard allocation','Basic support'],featured:false},
+  {name:'Builder',allocation:'1,000 – 9,999 VT',desc:'Priority access and guaranteed minimum allocation in all vetted IDOs.',perks:['Priority access','Guaranteed allocation','Early whitelist'],featured:true},
+  {name:'Pioneer',allocation:'10,000 – 99,999 VT',desc:'Exclusive early access 24h before public launch with boosted allocation.',perks:['24h early access','2x allocation boost','Direct team chat'],featured:false},
+  {name:'Founder',allocation:'100,000+ VT',desc:'Founding member status. Co-invest rights and DAO vetting vote.',perks:['Founding badge','DAO vetting vote','Revenue share 0.1%'],featured:false},
+];
+
+const PROJECTS_LIST=[
+  {name:'GreenChain Token',price:0.01},
+  {name:'VuraLearn Token',price:0.005},
+  {name:'DeFi Yield Pro',price:0.02},
+  {name:'VuraGames Token',price:0.008},
+  {name:'VuraPay Plus',price:0.015},
+];
+
+const PORTFOLIO_DATA=[
+  {logo:'🌿',bg:'linear-gradient(135deg,#052e16,#0a150a)',name:'GreenChain Token',symbol:'GCT',invested:'1,000 VT',tokens:'100,000 GCT',value:'1,280 VT',chg:'+28%',up:true,status:'Vesting'},
+  {logo:'📚',bg:'linear-gradient(135deg,#0a0a2a,#050510)',name:'VuraLearn Token',symbol:'VLT',invested:'500 VT',tokens:'100,000 VLT',value:'620 VT',chg:'+24%',up:true,status:'Vesting'},
+  {logo:'📺',bg:'linear-gradient(135deg,#1a0a00,#0a0500)',name:'VuraStream Creator',symbol:'VSC',invested:'1,500 VT',tokens:'125,000 VSC',value:'1,980 VT',chg:'+32%',up:true,status:'Claimable'},
+  {logo:'🎮',bg:'linear-gradient(135deg,#1a0a1a,#050308)',name:'VuraGames Token',symbol:'VGT',invested:'240 VT',tokens:'30,000 VGT',value:'240 VT',chg:'0%',up:true,status:'Locked'},
+];
+
+// ═══ RENDER ═══
+function renderIdoFilters(){
+  const filters=['All','Live','Upcoming','Ended'];
+  document.getElementById('ido-filters').innerHTML=filters.map((f,i)=>`<button class="idf-btn ${i===0?'active':''}" onclick="filterIdos(this,'${f.toLowerCase()}')">${f==='Live'?'🟢':f==='Upcoming'?'🟡':f==='Ended'?'⚫':'🔥'} ${f}</button>`).join('');
+}
+
+function filterIdos(el,filter){
+  document.querySelectorAll('.idf-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  const list=filter==='all'?IDOS:IDOS.filter(i=>i.status===filter);
+  renderIdoGrid(list);
+}
+
+function renderIdoGrid(list){
+  const statusMap={live:`<span class="pill green">● LIVE</span>`,upcoming:`<span class="pill gold">⏳ UPCOMING</span>`,ended:`<span class="pill" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--muted);">ENDED</span>`};
+  document.getElementById('ido-grid').innerHTML=list.map(ido=>`
+    <div class="ido-card" onclick="openDetail(${ido.id})">
+      <div class="ic-banner"><div class="ic-banner-bg" style="background:${ido.bg};"></div><div class="ic-banner-emoji">${ido.emoji}</div>
+        <div class="ic-logo" style="background:${ido.bg};">${ido.emoji}</div>
+        <div class="ic-status-badge">${statusMap[ido.status]||''}</div>
+      </div>
+      <div class="ic-body">
+        <div class="ic-name">${ido.name}</div>
+        <div class="ic-symbol">$${ido.symbol} · ${ido.type} · Score: ${ido.score}/100</div>
+        <div class="ic-desc">${ido.desc}</div>
+        ${ido.status!=='upcoming'?`
+        <div class="ic-progress">
+          <div class="icp-label"><span class="icp-raised">${(ido.raised/1000).toFixed(0)}K VT</span><span class="icp-goal">of ${(ido.goal/1000000).toFixed(1)}M VT</span></div>
+          <div class="icp-bar"><div class="icp-fill" style="width:${Math.round(ido.raised/ido.goal*100)}%;"></div></div>
+        </div>`:`<div style="height:28px;display:flex;align-items:center;"><span style="font-size:12px;color:var(--muted);">Opens soon — join whitelist</span></div>`}
+        <div class="ic-meta">
+          <div class="icm-item"><span class="icm-val">${ido.status!=='upcoming'?Math.round(ido.raised/ido.goal*100)+'%':'—'}</span><span class="icm-lbl">Filled</span></div>
+          <div class="icm-item"><span class="icm-val">${ido.price} VT</span><span class="icm-lbl">Token Price</span></div>
+          <div class="icm-item"><span class="icm-val">${ido.investors.toLocaleString()}</span><span class="icm-lbl">Investors</span></div>
+        </div>
+        <div class="ic-footer">
+          <div class="ic-vt-badge">Min: ${ido.minInvest} VT</div>
+          <button class="ic-invest-btn ${ido.status==='ended'?'disabled':''}" onclick="event.stopPropagation();${ido.status!=='ended'?`openInvest('${ido.name}','${ido.emoji}','${ido.type}',${ido.price})`:`showToast('IDO Ended','red')`}">${ido.status==='ended'?'ENDED':ido.status==='upcoming'?'WHITELIST':'INVEST'}</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function openDetail(id){
+  const ido=IDOS.find(x=>x.id===id);
+  if(!ido)return;
+  document.getElementById('det-title').textContent=ido.name+' — '+ido.type;
+  const pct=Math.round(ido.raised/ido.goal*100);
+  document.getElementById('det-body').innerHTML=`
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+      <div style="width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;background:${ido.bg};border:2px solid var(--border);">${ido.emoji}</div>
+      <div><div style="font-family:'Orbitron',monospace;font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px;">${ido.name}</div><div style="font-size:12px;color:var(--muted);">$${ido.symbol} · ${ido.type} · Vetting Score: <strong style="color:var(--gold);">${ido.score}/100</strong></div></div>
+    </div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">${ido.desc}</div>
+    <div style="height:1px;background:var(--border);margin:14px 0;"></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;"><span style="color:var(--gold);font-family:'Orbitron',monospace;font-weight:700;">${(ido.raised/1000).toFixed(0)}K VT raised</span><span style="color:var(--muted);">of ${(ido.goal/1000000).toFixed(1)}M VT goal (${pct}%)</span></div>
+    <div style="height:10px;background:rgba(255,255,255,0.05);border-radius:5px;overflow:hidden;margin-bottom:16px;"><div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--green-deep),var(--green),var(--gold));border-radius:5px;"></div></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;"><div style="font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:var(--gold);margin-bottom:3px;">${ido.price} VT</div><div style="font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;">Token Price</div></div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;"><div style="font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px;">${ido.investors.toLocaleString()}</div><div style="font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;">Investors</div></div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;"><div style="font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:var(--green);margin-bottom:3px;">${ido.audit}</div><div style="font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;">Audited By</div></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px;"><span>Vesting Schedule</span><span style="color:var(--text2);">${ido.vesting}</span></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:14px;"><span>Minimum Investment</span><span style="color:var(--text2);">${ido.minInvest} VT</span></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">${ido.tags.map(t=>`<span class="pill green">${t}</span>`).join('')}</div>
+    ${ido.status!=='ended'?`<button class="mbtn mbtn-gold" onclick="closeOverlay('overlay-detail');openInvest('${ido.name}','${ido.emoji}','${ido.type}',${ido.price})">💰 INVEST IN ${ido.name}</button>`:`<button class="mbtn mbtn-outline" onclick="closeOverlay('overlay-detail')">IDO ENDED</button>`}`;
+  openOverlay('overlay-detail');
+}
+
+function renderTiers(){
+  document.getElementById('tier-cards').innerHTML=TIERS.map(t=>`
+    <div class="tier-card ${t.featured?'featured':''}">
+      ${t.featured?'<div class="tc-featured-badge">⭐ MOST POPULAR</div>':''}
+      <div class="tier-header"><span class="tier-name">${t.name}</span><span class="tier-allocation">${t.allocation}</span></div>
+      <div class="tier-desc">${t.desc}</div>
+      <div class="tier-perks">${t.perks.map(p=>`<span class="tier-perk">${p}</span>`).join('')}</div>
+    </div>`).join('');
+}
+
+function renderProjectSelect(){
+  document.getElementById('project-select').innerHTML=PROJECTS_LIST.map((p,i)=>`<div class="ips-item ${i===0?'active':''}" onclick="selectProject(this,${i})">${p.name.split(' ')[0]}</div>`).join('');
+}
+
+let selectedProjectIdx=0;
+function selectProject(el,idx){
+  document.querySelectorAll('.ips-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  selectedProjectIdx=idx;
+  updateQuickCalc();
+}
+
+function updateQuickCalc(){
+  const amt=parseFloat(document.getElementById('quick-invest-amount')?.value)||0;
+  const proj=PROJECTS_LIST[selectedProjectIdx];
+  const tokens=proj?Math.floor(amt/proj.price):0;
+  const usdt=(amt*vtPrice).toFixed(2);
+  const fee=Math.max(1,Math.floor(amt*0.01));
+  if(document.getElementById('qi-invest'))document.getElementById('qi-invest').textContent=amt+' VT';
+  if(document.getElementById('qi-tokens'))document.getElementById('qi-tokens').textContent=tokens.toLocaleString()+' tokens';
+  if(document.getElementById('qi-usdt'))document.getElementById('qi-usdt').textContent='≈ $'+usdt;
+  if(document.getElementById('qi-fee'))document.getElementById('qi-fee').textContent=fee+' VT (1%)';
+}
+
+function setQuickAmt(n){
+  const el=document.getElementById('quick-invest-amount');
+  if(el){el.value=n;updateQuickCalc();}
+}
+
+function openQuickInvest(){
+  const proj=PROJECTS_LIST[selectedProjectIdx];
+  openInvest(proj.name,'🚀','IDO',proj.price);
+}
+
+function renderPortfolio(){
+  document.getElementById('portfolio-table').innerHTML=`
+    <div class="pt-header">
+      <div class="pth-cell">Project</div>
+      <div class="pth-cell">Invested</div>
+      <div class="pth-cell">Tokens</div>
+      <div class="pth-cell">Value</div>
+      <div class="pth-cell">Status</div>
+    </div>
+    ${PORTFOLIO_DATA.map(p=>`
+      <div class="pt-row">
+        <div class="ptr-project"><div class="ptr-logo" style="background:${p.bg};">${p.logo}</div><div><div class="ptr-name">${p.name}</div><div class="ptr-sym">$${p.symbol}</div></div></div>
+        <div class="ptr-val">${p.invested}</div>
+        <div class="ptr-val">${p.tokens}</div>
+        <div><div class="ptr-val">${p.value}</div><div class="ptr-chg ${p.up?'up':'dn'}" style="font-size:10px;font-weight:700;">${p.chg}</div></div>
+        <div><span class="pill ${p.status==='Claimable'?'gold':p.status==='Vesting'?'green':'blue'}" style="font-size:9px;">${p.status}</span></div>
+      </div>`).join('')}`;
+}
+
+// ═══ INVEST FLOW ═══
+function openInvest(name,logo,type,price){
+  currentInvestProject={name,logo,type,price};
+  document.getElementById('inv-title').textContent='💰 INVEST — '+name;
+  document.getElementById('inv-logo').textContent=logo;
+  document.getElementById('inv-name').textContent=name;
+  document.getElementById('inv-type').textContent=type+' · Price: '+price+' VT per token';
+  document.getElementById('inv-price').textContent=price+' VT';
+  document.getElementById('inv-balance').textContent=vtBalance.toFixed(2)+' VT';
+  document.getElementById('inv-amount').value='';
+  document.getElementById('inv-vt-display').textContent='0 VT';
+  document.getElementById('inv-tokens').textContent='0 tokens';
+  document.getElementById('inv-usdt').textContent='$0.00';
+  openOverlay('overlay-invest');
+}
+
+function calcInvest(){
+  const amt=parseFloat(document.getElementById('inv-amount').value)||0;
+  const tokens=Math.floor(amt/currentInvestProject.price);
+  document.getElementById('inv-vt-display').textContent=amt+' VT';
+  document.getElementById('inv-tokens').textContent=tokens.toLocaleString()+' tokens';
+  document.getElementById('inv-usdt').textContent='$'+(amt*vtPrice).toFixed(2);
+}
+
+function setInvAmt(n){document.getElementById('inv-amount').value=n;calcInvest();}
+
+function confirmInvest(){
+  const amt=parseFloat(document.getElementById('inv-amount').value)||0;
+  if(amt<100){showToast('⚠ Minimum 100 VT','red');return;}
+  if(vtBalance<amt){showToast('⚠ Insufficient VT balance','red');return;}
+  vtBalance-=amt;
+  document.getElementById('invest-bal').textContent=vtBalance.toFixed(2)+' VT';
+  closeOverlay('overlay-invest');
+  showToast('🚀 Invested '+amt+' VT in '+currentInvestProject.name+'!','gold');
+}
+
+// ═══ APPLY MULTI-STEP ═══
+function renderStepProgress(){
+  const labels=['Project','Tokenomics','Team & Docs','Review'];
+  const container=document.getElementById('step-progress');
+  if(!container)return;
+  container.innerHTML=labels.map((l,i)=>{
+    const n=i+1;
+    const cls=n<appStep?'done':n===appStep?'active':'pending';
+    return `${i>0?`<div class="sp-line ${n<=appStep?'done':''}"></div>`:''}
+    <div class="sp-step ${cls}"><div class="sp-dot ${cls}">${n<appStep?'✓':n}</div><div class="sp-label">${l}</div></div>`;
+  }).join('');
+}
+
+function nextStep(step){
+  if(step===4){
+    const name=document.getElementById('app-name')?.value||'Your Project';
+    document.getElementById('app-summary').innerHTML=`<strong style="color:var(--green);">Project:</strong> ${name}<br><strong style="color:var(--green);">Status:</strong> Ready for submission<br><strong style="color:var(--green);">Application Fee:</strong> 500 VT<br><strong style="color:var(--green);">Next Step:</strong> Team review within 48 hours`;
+  }
+  document.getElementById('step'+appStep).classList.remove('active');
+  appStep=step;
+  document.getElementById('step'+appStep).classList.add('active');
+  renderStepProgress();
+}
+
+function submitApplication(){
+  const ref='VLP-'+Math.floor(Math.random()*9000+1000);
+  document.getElementById('app-ref').textContent='Reference: '+ref;
+  closeOverlay('overlay-detail');
+  openOverlay('overlay-applied');
+}
+
+// ═══ COUNTDOWN ═══
+function updateCountdown(){
+  const now=new Date();
+  const end=new Date(now.getTime()+(2.6*24*60*60*1000));
+  const diff=end-now;
+  if(diff<=0)return;
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor((diff%86400000)/3600000);
+  const m=Math.floor((diff%3600000)/60000);
+  const s=Math.floor((diff%60000)/1000);
+  const f=(n)=>String(n).padStart(2,'0');
+  const hcd=document.getElementById('hcd');const hch=document.getElementById('hch');
+  const hcm=document.getElementById('hcm');const hcs=document.getElementById('hcs');
+  if(hcd)hcd.textContent=f(d);if(hch)hch.textContent=f(h);
+  if(hcm)hcm.textContent=f(m);if(hcs)hcs.textContent=f(s);
+}
+setInterval(updateCountdown,1000);
+updateCountdown();
+
+// ═══ PRICE SIM ═══
+function simPrice(){
+  vtPrice=Math.max(0.0095,Math.min(0.015,vtPrice+(Math.random()-0.48)*0.0002));
+  const str='$'+vtPrice.toFixed(4);
+  const el=document.getElementById('nav-vt-price'); if(el)el.textContent='1 VT = '+str;
+  const tp=document.getElementById('tick-price'); if(tp)tp.textContent=str;
+}
+setInterval(simPrice,4000);
+
+// ═══ NAV ═══
+window.addEventListener('scroll',()=>{
+  const secs=['hero','idos','vetting','fundraising','portfolio','apply','how'];
+  let cur='hero';
+  secs.forEach(id=>{const el=document.getElementById(id);if(el&&window.scrollY>=el.offsetTop-130)cur=id;});
+  document.querySelectorAll('.nav-link').forEach(l=>{
+    const oc=l.getAttribute('onclick')||'';
+    l.classList.toggle('active',oc.includes(cur));
+  });
+});
+
+// ═══ REVEAL ═══
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:0.08});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>obs.observe(el));
+
+// ═══ OVERLAY ═══
+function openOverlay(id){const el=document.getElementById(id);if(el)el.classList.add('open');}
+function closeOverlay(id){const el=document.getElementById(id);if(el)el.classList.remove('open');}
+document.querySelectorAll('.overlay').forEach(o=>{o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');});});
+
+function goTo(sel){const el=document.querySelector(sel);if(el)el.scrollIntoView({behavior:'smooth'});}
+let toastT=null;
+function showToast(msg,type){const t=document.getElementById('toast');t.textContent=msg;t.className='toast'+(type?' '+type:'');t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2500);}
+
+// ═══ INIT ═══
+renderIdoFilters();
+renderIdoGrid(IDOS);
+renderTiers();
+renderProjectSelect();
+renderPortfolio();
+renderStepProgress();
+updateQuickCalc();
+</script>
+</body>
+</html>
